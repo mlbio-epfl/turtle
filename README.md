@@ -1,10 +1,10 @@
-## Let Go of Your Labels with Unsupervised Transfer Learning
+## Let Go of Your Labels with Unsupervised Transfer
 
 [Artyom Gadetsky*](http://agadetsky.github.io), [Yulun Jiang*](https://yljblues.github.io), [Maria Brbić](https://brbiclab.epfl.ch/team/)
 
 [`Project page`](https://brbiclab.epfl.ch/projects/turtle/) | [`BibTeX`](#citing)
 _________________
-This repo contains the source code of the TURTLE algorithm written in PyTorch. For more details please check our paper [Let Go of Your Labels with Unsupervised Transfer Learning]() (ICML '24).
+This repo contains the source code of the TURTLE algorithm written in PyTorch. For more details please check our paper [Let Go of Your Labels with Unsupervised Transfer]() (ICML '24).
 
 ### Dependencies
 
@@ -22,6 +22,7 @@ The code is built with the following libraries:
 
 While developing TURTLE we greatly benefited from the open-source repositories:
 
+- [HUME](https://github.com/mlbio-epfl/hume)
 - [CLIP](https://github.com/openai/CLIP/tree/main)
 - [DINOv2](https://github.com/facebookresearch/dinov2/tree/main)
 
@@ -32,7 +33,7 @@ If you find our code useful, please consider citing:
 ```
 @inproceedings{
     gadetsky2024let,
-    title={Let Go of Your Labels with Unsupervised Transfer Learning},
+    title={Let Go of Your Labels with Unsupervised Transfer},
     author={Gadetsky, Artyom and Jiang, Yulun and Brbi\'c, Maria},
     booktitle={International Conference on Machine Learning},
     year={2024},
