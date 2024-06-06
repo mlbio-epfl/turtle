@@ -25,6 +25,7 @@ While developing TURTLE we greatly benefited from the open-source repositories:
 - [HUME](https://github.com/mlbio-epfl/hume)
 - [CLIP](https://github.com/openai/CLIP/tree/main)
 - [SLIP](https://github.com/facebookresearch/SLIP)
+- [VISSL](https://github.com/facebookresearch/vissl/tree/main)
 - [DINOv2](https://github.com/facebookresearch/dinov2/tree/main)
 
 ### Citing
