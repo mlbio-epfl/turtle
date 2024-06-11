@@ -2,7 +2,7 @@
 
 [Artyom Gadetsky*](http://agadetsky.github.io), [Yulun Jiang*](https://yljblues.github.io), [Maria Brbić](https://brbiclab.epfl.ch/team/)
 
-[`Project page`](https://brbiclab.epfl.ch/projects/turtle/) | [`BibTeX`](#citing) | [Paper`]([https://brbiclab.epfl.ch/projects/turtle/](https://openreview.net/pdf?id=RZHRnnGcEx)) 
+[`Project page`](https://brbiclab.epfl.ch/projects/turtle/) | [`BibTeX`](#citing) | [`Paper`]([https://brbiclab.epfl.ch/projects/turtle/](https://openreview.net/pdf?id=RZHRnnGcEx)) 
 _________________
 This repo contains the source code of 🐢 TURTLE, an unupervised learning algorithm written in PyTorch. 🔥 TURTLE achieves state-of-the-art unsupervised performance on the variety of benchmark datasets. For more details please check our paper [Let Go of Your Labels with Unsupervised Transfer](https://openreview.net/pdf?id=RZHRnnGcEx) (ICML '24).
 
