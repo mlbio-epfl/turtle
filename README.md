@@ -4,7 +4,7 @@
 
 [`Project page`](https://brbiclab.epfl.ch/projects/turtle/) | [`BibTeX`](#citing)
 _________________
-This repo contains the source code of the TURTLE 🐢 an unupervised learning algorithm written in PyTorch.  TURTLE achieves 🔥 state-of-the-art unsupervised performance on the variety of benchmark datasets. For more details please check our paper [Let Go of Your Labels with Unsupervised Transfer](https://openreview.net/pdf?id=RZHRnnGcEx) (ICML '24).
+This repo contains the source code of 🐢 TURTLE, an unupervised learning algorithm written in PyTorch.  TURTLE achieves 🔥 state-of-the-art unsupervised performance on the variety of benchmark datasets. For more details please check our paper [Let Go of Your Labels with Unsupervised Transfer](https://openreview.net/pdf?id=RZHRnnGcEx) (ICML '24).
 
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/let-go-of-your-labels-with-unsupervised/image-clustering-on-imagenet)](https://paperswithcode.com/sota/image-clustering-on-imagenet?p=let-go-of-your-labels-with-unsupervised)
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/let-go-of-your-labels-with-unsupervised/image-clustering-on-cifar-10)](https://paperswithcode.com/sota/image-clustering-on-cifar-10?p=let-go-of-your-labels-with-unsupervised)
