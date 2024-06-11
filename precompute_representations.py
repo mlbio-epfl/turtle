@@ -3,7 +3,6 @@ import os
 from tqdm import tqdm
 
 import torch
-from torch.nn import functional as F
 import numpy as np
 
 import clip
@@ -12,10 +11,10 @@ from dataset_preparation.data_utils import get_dataloaders, _convert_image_to_rg
 def _parse_args(args):
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', type=str, help="Dataset to precompute embeddings")
-    parser.add_argument('--phis', type=str, default="clipvitL14", help="Representation spaces to run TURTLE", 
+    parser.add_argument('--phis', type=str, default="clipvitL14", help="Representation spaces to precompute", 
                             choices=['clipRN50', 'clipRN101', 'clipRN50x4', 'clipRN50x16', 'clipRN50x64', 'clipvitB32', 'clipvitB16', 'clipvitL14', 'dinov2'])
     parser.add_argument('--batch_size', type=int, default=256)
-    parser.add_argument('--root_dir', type=str, default="data", help='Root dir to store everthything')
+    parser.add_argument('--root_dir', type=str, default="data", help='Root dir to store everything')
     parser.add_argument('--device', type=str, default="cuda", help="cuda or cpu")
     return parser.parse_args(args)
 

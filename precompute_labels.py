@@ -1,7 +1,6 @@
 import argparse
 import os
 
-import torch
 import numpy as np
 
 from dataset_preparation.data_utils import get_datasets
@@ -11,8 +10,8 @@ from utils import seed_everything
 
 def _parse_args(args):
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset', type=str, help="Dataset to precompute embeddings", required=True)
-    parser.add_argument('--root_dir', type=str, default="data", help='Root dir to store everthything')
+    parser.add_argument('--dataset', type=str, help="Dataset to precompute ground truth labels", required=True)
+    parser.add_argument('--root_dir', type=str, default="data", help='Root dir to store everything')
     parser.add_argument('--seed', type=int, default=42, help='Random seed')
     return parser.parse_args(args)
 
@@ -26,10 +25,6 @@ def get_labels(dataset):
         return dataset._labels
     elif hasattr(dataset, "_samples"): # cars
         return [elem[1] for elem in dataset._samples]
-    #elif hasattr(dataset, "h5py"):
-    #    return [dataset[i][1] for i in range(len(dataset))]
-    #else:
-    #    raise ValueError("Dataset does not have targets or labels")
     else:
         return [dataset[i][1] for i in range(len(dataset))]
 

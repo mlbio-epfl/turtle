@@ -18,16 +18,16 @@ def _parse_args(args):
     # training
     parser.add_argument('--gamma', type=float, default=10., help='Hyperparameter for entropy regularization in Eq. (12)')
     parser.add_argument('--T', type=int, default=6000, help='Number of iterations to train task encoder')
-    parser.add_argument('--inner_lr', type=float, default=0.001, help='Learning rate of inner learning')
-    parser.add_argument('--outer_lr', type=float, default=0.001, help='Learning rate of task encoder')
+    parser.add_argument('--inner_lr', type=float, default=0.001, help='Learning rate for inner loop')
+    parser.add_argument('--outer_lr', type=float, default=0.001, help='Learning rate for task encoder')
     parser.add_argument('--batch_size', type=int, default=10000)
     parser.add_argument('--warm_start', action='store_true',
-                        help="warm start = initialize from last iteration, cold start = initialize randomly, by default use start") 
-    parser.add_argument('--M', type=int, default=10, help='Steps to train inner learner at each interation')
+                        help="warm start = initialize from last iteration, cold start = initialize randomly, cold-start is used by default") 
+    parser.add_argument('--M', type=int, default=10, help='Number of inner steps at each outer iteration')
     # others
-    parser.add_argument('--cross_val', action='store_true', help='Do cross-validation to compute generalization score')
+    parser.add_argument('--cross_val', action='store_true', help='Whether to perform cross-validation to compute generalization score after training')
     parser.add_argument('--device', type=str, default="cuda", help="cuda or cpu")
-    parser.add_argument('--root_dir', type=str, default="data", help='Root dir to store everthything')
+    parser.add_argument('--root_dir', type=str, default="data", help='Root dir to store everything')
     parser.add_argument('--seed', type=int, default=42, help='Random seed')
     return parser.parse_args(args)
 
@@ -48,12 +48,11 @@ def run(args=None):
     print("Number of training samples:", n_tr)
 
     # Define task encoder
-    '''Weight norm is crucial for good performance'''
     task_encoder = [nn.utils.weight_norm(nn.Linear(d, C)).to(args.device) for d in feature_dims] 
 
     def task_encoding(Zs):
         assert len(Zs) == len(task_encoder)
-        # Labelling by the average of $\sigmoid(\theta \phi(x))$, Eq. (9) in the paper
+        # Generate labeling by the average of $\sigmoid(\theta \phi(x))$, Eq. (9) in the paper
         label_per_space = [F.softmax(task_phi(z), dim=1) for task_phi, z in zip(task_encoder, Zs)]
         labels = sum(label_per_space) / len(label_per_space) # shape of (N, C)
         return labels, label_per_space
@@ -74,7 +73,7 @@ def run(args=None):
     iters_bar = tqdm(range(args.T))
     for i in iters_bar:
         optimizer.zero_grad()
-        # load batch data
+        # load batch of data
         indices = np.random.choice(n_tr, size=batch_size, replace=False)
         Zs_tr = [torch.from_numpy(Z_train[indices]).to(args.device) for Z_train in Zs_train]
 
@@ -94,7 +93,7 @@ def run(args=None):
             loss.backward()
             inner_opt.step()
 
-        # update outer task encoder
+        # update task encoder
         optimizer.zero_grad()
         pred_error = sum([F.cross_entropy(w_in(z_tr).detach(), labels) for w_in, z_tr in zip(W_in, Zs_tr)])
 
@@ -109,7 +108,6 @@ def run(args=None):
         if (i+1) % 20 == 0 or (i+1) == args.T:
             labels_val, _ = task_encoding([torch.from_numpy(Z_val).to(args.device) for Z_val in Zs_val])
             preds_val = labels_val.argmax(dim=1).detach().cpu().numpy()
-            # compute clustering accuracy
             cluster_acc, _ = get_cluster_acc(preds_val, y_gt_val)
 
             iters_bar.set_description(f'Training loss {float(pred_error):.3f}, entropy {float(entr_reg):.3f}, found clusters {len(np.unique(preds_val))}/{C}, cluster acc {cluster_acc:.4f}')
@@ -129,7 +127,6 @@ def run(args=None):
 
         # do cross-validation on pseudo-labels
         generalization_score = 0.
-        # import pdb; pdb.set_trace()
         for Z_train in Zs_train:
             generalization_score += LR_cross_validation(Z_train, y_pred, num_epochs=1000 if args.dataset not in ['imagenet', 'pcam', 'kinetics700'] else 400)
 

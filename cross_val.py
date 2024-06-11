@@ -1,11 +1,7 @@
 import copy
+
 from tqdm import tqdm
-
 import numpy as np
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-
 import cudf, cuml
 
 def LR_cross_validation(X, Y, num_epochs=1000, kfold=10, indices=None, C=1.0, seed=42):

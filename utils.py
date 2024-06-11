@@ -3,7 +3,6 @@ from collections import defaultdict
 
 import numpy as np
 import torch
-from tqdm import tqdm
 
 from scipy.optimize import linear_sum_assignment
 from sklearn import metrics
@@ -18,10 +17,11 @@ def seed_everything(seed):
 
 def get_cluster_acc(y_pred, y_true, return_matching=False):
     """
-    Calculate clustering accuracy. Require scikit-learn installed
+    Calculate clustering accuracy and clustering mean per class accuracy.
+    Requires scipy installed
     # Arguments
-        y: true labels, numpy.array with shape `(n_samples,)`
         y_pred: predicted labels, numpy.array with shape `(n_samples,)`
+        y_true: true labels, numpy.array with shape `(n_samples,)`
     # Return
         Accuracy in [0,1]
     """
@@ -49,8 +49,8 @@ def get_nmi(y_pred, y_true):
     """
     Calculate normalized mutual information. Require scikit-learn installed
     # Arguments
-        y: true labels, numpy.array with shape `(n_samples,)`
         y_pred: predicted labels, numpy.array with shape `(n_samples,)`
+        y_true: true labels, numpy.array with shape `(n_samples,)`
     # Return
         NMI in [0,1]
     """
@@ -58,6 +58,14 @@ def get_nmi(y_pred, y_true):
     return nmi
 
 def get_ari(y_pred, y_true):
+    """
+    Calculate adjusted rand index. Require scikit-learn installed
+    # Arguments
+        y_pred: predicted labels, numpy.array with shape `(n_samples,)`
+        y_true: true labels, numpy.array with shape `(n_samples,)`
+    # Return
+        ARI in [0,1]
+    """
     return metrics.adjusted_rand_score(y_true, y_pred)
 
 datasets = [
@@ -68,7 +76,6 @@ datasets = [
     "sun397",
     "cars",
     "aircraft",
-    # "voc2007",
     "dtd",
     "pets",
     "caltech101",
@@ -100,7 +107,6 @@ datasets_to_c = {
     "sun397": 397,
     "cars": 196,
     "aircraft": 100,
-    # "voc2007": 20,
     "dtd": 47,
     "pets": 37,
     "caltech101": 102,
