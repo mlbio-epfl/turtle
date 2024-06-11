@@ -88,7 +88,7 @@ python run_turtle.py --dataset ${DATASET} --phis ${REPRESENTATION1} ${REPRESENTA
 
 You can also use ```--inner_lr```, ```---outer_lr```, ```--warm_start``` to specify inner step size, outer step size and whether to use cold-start or warm start bilevel optimization. Furthermore, use ``--cross_val`` to compute the generalization score for the found labeling after training. You can perform hyperparameter sweep and use the generalization score to select the best hyperparemeters **without using ground truth labels**.
 
-### Pre-trained checkpoints
+### Pre-trained Checkpoints
 
 We also release the labelings found by TURTLE for all datasets and all model architectures used in our paper. To download pre-trained checkpoints, run:
 ```
