@@ -2,7 +2,7 @@
 
 [Artyom Gadetsky*](http://agadetsky.github.io), [Yulun Jiang*](https://yljblues.github.io), [Maria Brbić](https://brbiclab.epfl.ch/team/)
 
-[`Project page`](https://brbiclab.epfl.ch/projects/turtle/) | [`BibTeX`](#citing) 
+[`Project page`](https://brbiclab.epfl.ch/projects/turtle/) | [`Paper`](https://openreview.net/pdf?id=RZHRnnGcEx) | [`BibTeX`](#citing) 
 _________________
 This repo contains the source code of 🐢 TURTLE, an unupervised learning algorithm written in PyTorch. 🔥 TURTLE achieves state-of-the-art unsupervised performance on the variety of benchmark datasets. For more details please check our paper [Let Go of Your Labels with Unsupervised Transfer](https://openreview.net/pdf?id=RZHRnnGcEx) (ICML '24).
 
@@ -19,6 +19,8 @@ This repo contains the source code of 🐢 TURTLE, an unupervised learning algor
 <div align="center" style="padding: 0 100pt">
 <img src="figures/setting_plot.png">
 </div>
+</br>
+<div align="justify">TURTLE is a method that enables fully unsupervised transfer from foundation models. The key idea behind our approach is to search for the labeling of a downstream dataset that maximizes the margins of linear classifiers in the space of single or multiple foundation models to uncover the underlying human labeling. Compared to zero-shot and supervised transfer, unsupervised transfer with TURTLE does not need the supervision in any form. Compared to deep clustering methods, TURTLE does not require task-specific representation learning that is expensive for modern foundation models.</div>
 
 ### Dependencies
 The code is built with the following libraries
