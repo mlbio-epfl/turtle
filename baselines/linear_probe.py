@@ -2,20 +2,19 @@ import argparse
 import os
 
 import numpy as np
-# from sklearn.linear_model import LogisticRegression, LogisticRegressionCV
 import cuml, cudf
 from sklearn.model_selection import train_test_split
 
 def _parse_args(args):
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', type=str, help="Dataset for Linear Probe evaluation")
-    parser.add_argument('--phis', type=str, default="clipvitL14", help="Representation spaces to run TURTLE", 
+    parser.add_argument('--phis', type=str, default="clipvitL14", help="Representation spaces to run Linear Probe", 
                             choices=['clipRN50', 'clipRN101', 'clipRN50x4', 'clipRN50x16', 'clipRN50x64', 'clipvitB32', 'clipvitB16', 'clipvitL14', 'dinov2'])
-    parser.add_argument('--root_dir', type=str, default="data", help='Root dir to store everthything')
+    parser.add_argument('--root_dir', type=str, default="data", help='Root dir to store everything')
     parser.add_argument('--seed', type=int, default=42, help='Random seed')
     parser.add_argument('--validation', action='store_true', help='Select regularization strength via cross-validation')
-    parser.add_argument('--Cs', type=int, default=10)
-    parser.add_argument('--Crange', type=int, default=4)
+    parser.add_argument('--Cs', type=int, default=96)
+    parser.add_argument('--Crange', type=int, default=6)
     return parser.parse_args(args)
 
 

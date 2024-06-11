@@ -118,7 +118,7 @@ python baselines/linear_probe.py --dataset ${DATASET} --phis ${REPRESENTATION}
 ```
 To select the l2 regularization strength for better performance, run 
 ```
-python baselines/linear_probe.py --dataset ${DATASET} --phis ${REPRESENTATION} --validation --Cs 96 --Crange 6
+python baselines/linear_probe.py --dataset ${DATASET} --phis ${REPRESENTATION} --validation
 ```
 
 #### K-Means

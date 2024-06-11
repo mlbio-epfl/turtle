@@ -21,7 +21,7 @@ def _parse_args(args):
     parser.add_argument('--phis', type=str, default="clipvitL14", choices=['clipRN50', 'clipRN101', 'clipRN50x4', 'clipRN50x16', 'clipRN50x64', 'clipvitB32', 'clipvitB16', 'clipvitL14'])
     parser.add_argument('--default_template_only', dest='default_template', action='store_true')
     parser.add_argument('--batch_size', type=int, default=256)
-    parser.add_argument('--root_dir', type=str, default="data", help='Root dir to store everthything')
+    parser.add_argument('--root_dir', type=str, default="data", help='Root dir to store everything')
     parser.add_argument('--device', type=str, default="cuda", help="cuda or cpu")
     parser.add_argument('--seed', type=int, default=42, help='Random seed')
     return parser.parse_args(args)
