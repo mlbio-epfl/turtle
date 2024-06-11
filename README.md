@@ -129,6 +129,7 @@ python baselines/kmeans.py --dataset ${DATASET} --phis ${REPRESENTATION}
 Run CLIP zero-shot transfer:
 ```
 python baselines/clip_zs.py --dataset ${DATASET} --phis ${REPRESENTATION}
+```
 
 ### Acknowledgements
 
