@@ -1,11 +1,9 @@
 import random
-from collections import defaultdict
-
-import numpy as np
-import torch
 
 from scipy.optimize import linear_sum_assignment
 from sklearn import metrics
+import numpy as np
+import torch
 
 
 def seed_everything(seed):

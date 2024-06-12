@@ -1,15 +1,15 @@
 import sys
 sys.path.append('.')
 
+from collections import defaultdict
 import argparse
 import os
-from tqdm import tqdm
-from collections import defaultdict
 
 import torch
-from torch.nn import functional as F
+import torch.nn.functional as F
 import clip
 import numpy as np
+from tqdm import tqdm
 
 from zs_templates import datasets_to_classes, datasets_to_templates
 from utils import seed_everything
@@ -17,7 +17,7 @@ from dataset_preparation.data_utils import get_dataloaders, _convert_image_to_rg
 
 def _parse_args(args):
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset', type=str, help="Dataset for zero-shot evaluation")
+    parser.add_argument('--dataset', type=str, help="Dataset for zero-shot evaluation", required=True)
     parser.add_argument('--phis', type=str, default="clipvitL14", choices=['clipRN50', 'clipRN101', 'clipRN50x4', 'clipRN50x16', 'clipRN50x64', 'clipvitB32', 'clipvitB16', 'clipvitL14'])
     parser.add_argument('--default_template_only', dest='default_template', action='store_true')
     parser.add_argument('--batch_size', type=int, default=256)
@@ -93,6 +93,7 @@ def run(args=None):
 
     ckpt_dir = os.path.join(args.root_dir, "checkpoints/clip")
     model, preprocess = clip.load(phi_to_name[args.phis], device=device, download_root=ckpt_dir)
+    model.eval()
     preprocess.transforms[2] = _convert_image_to_rgb
     preprocess.transforms[3] = _safe_to_tensor
     _, valloader = get_dataloaders(args.dataset, preprocess, args.batch_size, args.root_dir)

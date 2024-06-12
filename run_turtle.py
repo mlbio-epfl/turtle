@@ -12,17 +12,17 @@ from utils import seed_everything, get_cluster_acc, datasets_to_c
 def _parse_args(args):
     parser = argparse.ArgumentParser()
     # dataset
-    parser.add_argument('--dataset', type=str, help="Dataset to run TURTLE")
-    parser.add_argument('--phis', type=str, default="clipvitL14", nargs='+', help="Representation spaces to run TURTLE", 
+    parser.add_argument('--dataset', type=str, help="Dataset to run TURTLE", required=True)
+    parser.add_argument('--phis', type=str, default=["clipvitL14", "dinov2"], nargs='+', help="Representation spaces to run TURTLE", 
                             choices=['clipRN50', 'clipRN101', 'clipRN50x4', 'clipRN50x16', 'clipRN50x64', 'clipvitB32', 'clipvitB16', 'clipvitL14', 'dinov2'])
     # training
     parser.add_argument('--gamma', type=float, default=10., help='Hyperparameter for entropy regularization in Eq. (12)')
-    parser.add_argument('--T', type=int, default=6000, help='Number of iterations to train task encoder')
+    parser.add_argument('--T', type=int, default=6000, help='Number of outer iterations to train task encoder')
     parser.add_argument('--inner_lr', type=float, default=0.001, help='Learning rate for inner loop')
     parser.add_argument('--outer_lr', type=float, default=0.001, help='Learning rate for task encoder')
     parser.add_argument('--batch_size', type=int, default=10000)
     parser.add_argument('--warm_start', action='store_true',
-                        help="warm start = initialize from last iteration, cold start = initialize randomly, cold-start is used by default") 
+                        help="warm start = initialize inner learner from previous iteration, cold start = initialize randomly, cold-start is used by default") 
     parser.add_argument('--M', type=int, default=10, help='Number of inner steps at each outer iteration')
     # others
     parser.add_argument('--cross_val', action='store_true', help='Whether to perform cross-validation to compute generalization score after training')
@@ -53,14 +53,14 @@ def run(args=None):
     def task_encoding(Zs):
         assert len(Zs) == len(task_encoder)
         # Generate labeling by the average of $\sigmoid(\theta \phi(x))$, Eq. (9) in the paper
-        label_per_space = [F.softmax(task_phi(z), dim=1) for task_phi, z in zip(task_encoder, Zs)]
-        labels = sum(label_per_space) / len(label_per_space) # shape of (N, C)
+        label_per_space = [F.softmax(task_phi(z), dim=1) for task_phi, z in zip(task_encoder, Zs)] # shape of (K, N, C)
+        labels = torch.mean(torch.stack(label_per_space), dim=0) # shape of (N, C)
         return labels, label_per_space
     
     # we use Adam optimizer for faster convergence, other optimziers such as SGD could also work
     optimizer = torch.optim.Adam(sum([list(task_phi.parameters()) for task_phi in task_encoder], []), lr=args.outer_lr, betas=(0.9, 0.999))
 
-    # Define inner learner
+    # Define linear classifiers for the inner loop
     def init_inner():
         W_in = [nn.Linear(d, C).to(args.device) for d in feature_dims] 
         inner_opt = torch.optim.Adam(sum([list(W.parameters()) for W in W_in], []), lr=args.inner_lr, betas=(0.9, 0.999))
@@ -85,10 +85,10 @@ def run(args=None):
             W_in, inner_opt = init_inner()
         # else, warm start, keep previous 
 
-        # update inner learner
+        # inner loop: update linear classifiers
         for idx_inner in range(args.M):
             inner_opt.zero_grad()
-            # stop gradient by "labels.detach()"
+            # stop gradient by "labels.detach()" to perform first-order hypergradient approximation, i.e., Eq. (13) in the paper
             loss = sum([F.cross_entropy(w_in(z_tr), labels.detach()) for w_in, z_tr in zip(W_in, Zs_tr)])
             loss.backward()
             inner_opt.step()

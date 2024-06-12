@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 
 def _parse_args(args):
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset', type=str, help="Dataset for Linear Probe evaluation")
+    parser.add_argument('--dataset', type=str, help="Dataset for Linear Probe evaluation", required=True)
     parser.add_argument('--phis', type=str, default="clipvitL14", help="Representation spaces to run Linear Probe", 
                             choices=['clipRN50', 'clipRN101', 'clipRN50x4', 'clipRN50x16', 'clipRN50x64', 'clipvitB32', 'clipvitB16', 'clipvitL14', 'dinov2'])
     parser.add_argument('--root_dir', type=str, default="data", help='Root dir to store everything')

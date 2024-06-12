@@ -12,7 +12,7 @@ from utils import seed_everything, datasets_to_c, get_cluster_acc
 
 def _parse_args(args):
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset', type=str, help="Dataset for K-Means evaluation")
+    parser.add_argument('--dataset', type=str, help="Dataset for K-Means evaluation", required=True)
     parser.add_argument('--phis', type=str, default="clipvitL14", nargs='+', help="Representation spaces to run K-Means", 
                             choices=['clipRN50', 'clipRN101', 'clipRN50x4', 'clipRN50x16', 'clipRN50x64', 'clipvitB32', 'clipvitB16', 'clipvitL14', 'dinov2'])
     parser.add_argument('--root_dir', type=str, default="data", help='Root dir to store everything')
